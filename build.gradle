@@ -40,7 +40,6 @@ project(':dblx-core') {
 		compile 'org.processing:core:3.0.1'
 		compile 'org.processing:net:3.0.1'
 		compile 'org.processing:pde:3.0.1'
-		compile 'org.processing:pdf:3.0.1'
 		compile 'org.processing:serial:3.0.1'
 
 		compile 'org.anarres.mirrors.heronarts:p3lx:1.0.0-SNAPSHOT'
