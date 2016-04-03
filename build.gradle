@@ -1,0 +1,90 @@
+buildscript {
+	apply from: file('gradle/buildscript.gradle'), to: buildscript
+}
+
+apply plugin: 'org.anarres.stdproject'
+stdproject {
+}
+
+subprojects {
+	group = "org.anarres.dblx"
+
+	apply plugin: 'org.anarres.stdmodule'
+	stdmodule {
+		description "Dr Brainlove Lighting Control"
+		author id: 'shevek', name: 'Shevek', email: 'github@anarres.org'
+		license 'Apache-2.0'
+	}
+
+	repositories {
+		mavenLocal()
+	}
+
+	dependencies {
+		compile 'com.google.code.findbugs:annotations:2.0.3'
+		compile 'org.slf4j:slf4j-api:1.7.12'
+	}
+
+	sourceCompatibility = 1.7
+	animalsniffer {
+		signature = "org.codehaus.mojo.signature:java17:+@signature"
+		skip = true
+	}
+}
+
+project(':dblx-core') {
+	dependencies {
+		compile 'com.google.guava:guava:18.0'
+
+		// compile 'org.processing:processing-complete:3.0.1'
+		compile 'org.processing:core:3.0.1'
+		compile 'org.processing:net:3.0.1'
+		compile 'org.processing:pde:3.0.1'
+		compile 'org.processing:pdf:3.0.1'
+		compile 'org.processing:serial:3.0.1'
+
+		compile 'org.anarres.mirrors.heronarts:p3lx:1.0.0-SNAPSHOT'
+
+		compile 'org.biojava:jcolorbrewer:5.2'
+		compile 'com.opencsv:opencsv:3.7'
+	}
+}
+
+project(':dblx-ui') {
+	dependencies {
+		compile project(':dblx-core')
+	}
+}
+
+project(':dblx-iface-muse') {
+	dependencies {
+		compile project(':dblx-core')
+		compile 'org.anarres.mirrors.processing:oscp5:2.0.0-SNAPSHOT'
+	}
+}
+
+project(':dblx-iface-evolution') {
+	dependencies {
+		compile project(':dblx-core')
+	}
+}
+
+project(':dblx-output-beaglebone') {
+	dependencies {
+		compile project(':dblx-core')
+	}
+}
+
+project(':dblx-package') {
+	apply plugin: 'application'
+
+	mainClassName = 'org.anarres.dblx.core.Main'
+
+	dependencies {
+		compile project(':dblx-core')
+		compile project(':dblx-ui')
+		compile project(':dblx-iface-muse')
+		compile project(':dblx-iface-evolution')
+		compile project(':dblx-output-beaglebone')
+	}
+}
