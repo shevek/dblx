@@ -1,14 +1,13 @@
 package org.anarres.dblx.core.model;
 
-import com.google.common.base.Stopwatch;
 import heronarts.lx.model.LXModel;
 import heronarts.lx.model.LXPoint;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
+import javax.annotation.Nonnull;
+import org.anarres.dblx.core.Core;
 import processing.core.PVector;
 import processing.data.Table;
 import static org.anarres.dblx.core.Core.logTime;
@@ -53,7 +52,6 @@ import static org.anarres.dblx.core.Core.logTime;
  ************************************************************************* * */
 public class LXGraphModel extends LXModel {
 
-
     //***************************************************** FIELDS AND CONSTANTS
     //-------------- Constants
     private static final String DIR_MAPS = "models";
@@ -62,6 +60,7 @@ public class LXGraphModel extends LXModel {
     private static final String FILE_BARS = "bars.csv";
     private static final String FILE_PIXELS = "pixels.csv";
 
+    private final Core core;
     //-------------- Fields
     //Note that these are stored in maps, not lists. 
     //Nodes are keyed by their three letter name ("LAB", "YAK", etc)
@@ -106,8 +105,9 @@ public class LXGraphModel extends LXModel {
     /** ************************************************************ Constructor
      *
      *********************************************************************** * */
-    public LXGraphModel(String model_name) {
+    public LXGraphModel(@Nonnull Core core, String model_name) {
         // Stopwatch stopwatch = Stopwatch.createStarted();
+        this.core = core;
 
         logTime("-- loading model " + model_name);
 
@@ -127,10 +127,10 @@ public class LXGraphModel extends LXModel {
         this.load_pixels(path_pixels);
         logTime("---- loaded pixels");
 
-        this.initialize_pixels();
+        // this.initialize_pixels();
     }
 
-  // ========================================================= Load Data Files
+    // ========================================================= Load Data Files
     // ----------- Load Parameters
     // Custom layout variables, like physical constraints for pixels per inch,
     // borders around nodes, etc.
@@ -139,12 +139,12 @@ public class LXGraphModel extends LXModel {
         if (!f.exists()) {
             return;
         }
-        Table table_params = loadTable(path, "header,tsv");
+        Table table_params = core.lx.applet.loadTable(path, "header,tsv");
     }
 
     // ----------- Load Nodes
     private void load_nodes(String path) {
-        Table table_nodes = loadTable(path, "header,tsv");
+        Table table_nodes = core.lx.applet.loadTable(path, "header,tsv");
         for (processing.data.TableRow row : table_nodes.rows()) {
             Node node = new Node(
                     row.getString("Node"),
@@ -161,7 +161,7 @@ public class LXGraphModel extends LXModel {
     private void load_bars(String path) {
         PVector xyz1, xyz2;
         PVector dir;
-        Table table_bars = loadTable(path, "header,tsv");
+        Table table_bars = core.lx.applet.loadTable(path, "header,tsv");
         for (processing.data.TableRow row : table_bars.rows()) {
             Node node1 = this.nodes.get(row.getString("Node1"));
             Node node2 = this.nodes.get(row.getString("Node2"));
@@ -186,7 +186,7 @@ public class LXGraphModel extends LXModel {
         if (!f.exists()) {
             return;
         }
-        Table table_pixels = loadTable(path, "header,tsv");
+        Table table_pixels = core.lx.applet.loadTable(path, "header,tsv");
     }
 
     private void automap_bars() {
@@ -289,17 +289,18 @@ public class LXGraphModel extends LXModel {
             coords.add(step);
         }
 
-        bar.channel = channels - 1;
-        bar.strip = strips;
-        bar.channel_pixel = pixels_in_channel;
-        bar.model_pixel = pixals_in_model;
-        bar.points = points;
+        /*
+         bar.channel = channels - 1;
+         bar.strip = strips;
+         bar.channel_pixel = pixels_in_channel;
+         bar.model_pixel = pixals_in_model;
+         bar.points = points;
 
-        rev = bar.reverse();
-
+         rev = bar.reverse();
+         */
         //------------ Add Points and Bars to Model
-        this.bars.get(node1.name).put(node2.name, bar);
-        this.bars.get(node2.name).put(node1.name, rev);
+        this.bars.get(bar.node1.name).put(bar.node2.name, bar);
+        // this.bars.get(node2.name).put(node1.name, rev);
 
     }
 
