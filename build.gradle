@@ -91,7 +91,7 @@ project(':dblx-package') {
 
 	ospackage {
 		packageName = "dblx"
-		version = project.version + new Date().format(".yyyyMMdd.HHmmss")
+		version = project.version + new Date().format(".yyyyMMdd")
 
 		packageDescription = "Dr. Brainlove LED Lighting Controller."
 		packager = "Shevek <shevek@anarres.org>"
@@ -101,5 +101,17 @@ project(':dblx-package') {
 
 		into "/opt/dblx"
 
+		from("$project.buildDir/install/dblx-package/lib") {
+			into "lib"
+			fileMode 0644
+		}
+		from("$project.buildDir/install/dblx-package/bin") {
+			into "bin"
+			fileMode 0755
+		}
+	}
+
+	buildDeb {
+		dependsOn installApp
 	}
 }
