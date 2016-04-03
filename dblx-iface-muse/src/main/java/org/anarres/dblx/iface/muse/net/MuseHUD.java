@@ -5,7 +5,7 @@
  */
 package org.anarres.dblx.iface.muse.net;
 
-import heronarts.lx.LX;
+import org.anarres.dblx.core.Core;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import static processing.core.PApplet.println;
@@ -35,25 +35,29 @@ public class MuseHUD {
     public final int BARWIDTH = 8;
 
     // colors for muse horseshoe HUD
-//  colorMode(RGB, 255);
-    private color morange = 0;
-    private color mgreen = 0;
-    private color mblue = 0;
-    private color mred = 0;
-    private color morangel = 0;
-    private color mgreenl = 0;
-    private color mbluel = 0;
-    private color mredl = 0;
+    //  colorMode(RGB, 255);
+    private int morange = 0;
+    private int mgreen = 0;
+    private int mblue = 0;
+    private int mred = 0;
+    private int morangel = 0;
+    private int mgreenl = 0;
+    private int mbluel = 0;
+    private int mredl = 0;
 
-    public MuseHUD(MuseConnect muse) {
+    private static int color(int r, int g, int b) {
+        return 0xFF000000 | (r << 16) | (g << 8) | (b);
+    }
+
+    public MuseHUD(Core core, MuseConnect muse) {
         this.muse = muse;
         if (muse == null) {
             println("Muse object has not been instantiated yet");
         }
-        pgMuseHUD = createGraphics(WIDTH, HEIGHT);
+        pgMuseHUD = core.lx.applet.createGraphics(WIDTH, HEIGHT);
 
         // set up horseshoe colors
-        colorMode(PConstants.RGB, 255);
+        pgMuseHUD.colorMode(PConstants.RGB, 255);
         morange = color(204, 102, 0);
         mgreen = color(102, 204, 0);
         mblue = color(0, 102, 204);
@@ -69,21 +73,21 @@ public class MuseHUD {
         if (value > 1.0) {
             value = 1;
         }
-        return int (floor(-(maxHeight * value));
+        return (int) Math.floor(-(maxHeight * value));
     }
 
     private void updateHUD(PGraphics image) {
-        colorMode(PConstants.RGB, 255);
+        image.colorMode(PConstants.RGB, 255);
         int backColor = 50; //dark gray
         int foreColor = 200; // not quite white
-        fill(foreColor);
-        stroke(0);
+        image.fill(foreColor);
+        image.stroke(0);
         image.beginDraw();
         image.smooth();
         image.background(0xff444444); // color from ui.theme.windowBackgroundColor
         image.stroke(0);
         image.fill(backColor);
-        image.ellipseMode(RADIUS);
+        image.ellipseMode(PConstants.RADIUS);
         image.ellipse(WIDTH / 2, HEIGHT - 60 + VOFFSET, 35, 40); //head
 
         // println("Muse state: " + str(muse.touching_forehead) + " " + str(muse.horseshoe[0]) + " " + str(muse.horseshoe[1]) + " " + str(muse.horseshoe[2]) + " " + str(muse.horseshoe[3]));
@@ -151,10 +155,9 @@ public class MuseHUD {
             image.ellipse(WIDTH / 2 + 17, HEIGHT - 45 + VOFFSET, 6, 8); //TP10
         }
 
-        int battery = int(muse.battery_level
-        );
-    String battstr = "batt: " + str(battery) + "%";
-        color battfill = color(255); //white for default
+        int battery = (int) muse.battery_level;
+        String battstr = "batt: " + battery + "%";
+        int battfill = color(255, 255, 255); //white for default
         if (muse.touching_forehead == 0) {
             battfill = color(0, 0, 0); // disabled battery
         } else if (battery < 10) {
@@ -172,7 +175,7 @@ public class MuseHUD {
         image.strokeWeight(1);
         image.line(10, GRAPHBASE, 130, GRAPHBASE);
         image.line(50, GRAPHBASE, 50, GRAPHBASE - GRAPHHEIGHT);
-        textSize(10);
+        image.textSize(10);
         image.fill(200);
         // image.text("M C      D T A B G", 13, GRAPHBASE);
         image.text("M C      \u03B4 \u03B8 \u03B1 \u03B2 \u03B3", 13, GRAPHBASE);

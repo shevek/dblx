@@ -31,14 +31,12 @@ package org.anarres.dblx.iface.muse.net;
  * muse-io --preset 14 --osc osc.udp://localhost:5000
  *
  */
+import java.util.Arrays;
 import oscP5.*;
 import netP5.*;
 import static processing.core.PApplet.println;
 
 public class MuseConnect {
-
-// turn this on for debugging
-    private static boolean verboseMuse = false;
 
     Object parent; //need to have root Processing object - this - passed to constructor
 
@@ -97,14 +95,14 @@ public class MuseConnect {
         println("Opened OSC port to Muse headset on " + this.host + ":" + this.port);
     }
 
-    private void loadFromOsc(float[] arr, OscMessage msg, int n) {
+    public void loadFromOsc(float[] arr, OscMessage msg, int n) {
         // n is the expected number of elements in the message
         for (int i = 0; i < n; i++) {
             arr[i] = msg.get(i).floatValue();
         }
     }
 
-    private void loadFromOsc(int[] arr, OscMessage msg, int n) {
+    public void loadFromOsc(int[] arr, OscMessage msg, int n) {
         // n is the expected number of elements in the message
         for (int i = 0; i < n; i++) {
             arr[i] = msg.get(i).intValue();
@@ -190,7 +188,15 @@ public class MuseConnect {
 
 } //end MuseConnect
 
-class Foo {
+class MuseListener {
+
+    // turn this on for debugging
+    private static boolean verboseMuse = false;
+    private final MuseConnect muse;
+
+    public MuseListener(MuseConnect muse) {
+        this.muse = muse;
+    }
 
 //*********************************************************************************************
 // global function to catch all OSC messages
@@ -201,11 +207,11 @@ class Foo {
         if (msg.checkAddrPattern("/muse/elements/horseshoe") == true) {
             muse.loadFromOsc(muse.horseshoe, msg, 4);
             if (verboseMuse)
-                println("reading signal quality: " + arr2str(muse.horseshoe));
+                println("reading signal quality: " + Arrays.toString(muse.horseshoe));
         } else if (msg.checkAddrPattern("/muse/batt") == true) {
             muse.battery_level = msg.get(0).intValue() / 100;
             if (verboseMuse)
-                println("******* received battery level: " + str(muse.battery_level));
+                println("******* received battery level: " + muse.battery_level);
         } else if (msg.checkAddrPattern("/muse/elements/touching_forehead") == true) {
             muse.touching_forehead = msg.get(0).intValue();
         } //*************************
@@ -213,67 +219,67 @@ class Foo {
         else if (msg.checkAddrPattern("/muse/elements/delta_absolute") == true) {
             muse.loadFromOsc(muse.delta_absolute, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/delta_absolute: " + arr2str(muse.delta_absolute));
+                println("received /muse/elements/delta_absolute: " + Arrays.toString(muse.delta_absolute));
         } else if (msg.checkAddrPattern("/muse/elements/theta_absolute") == true) {
             muse.loadFromOsc(muse.theta_absolute, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/theta_absolute: " + arr2str(muse.theta_absolute));
+                println("received /muse/elements/theta_absolute: " + Arrays.toString(muse.theta_absolute));
         } else if (msg.checkAddrPattern("/muse/elements/alpha_absolute") == true) {
             muse.loadFromOsc(muse.alpha_absolute, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/alpha_absolute: " + arr2str(muse.alpha_absolute));
+                println("received /muse/elements/alpha_absolute: " + Arrays.toString(muse.alpha_absolute));
         } else if (msg.checkAddrPattern("/muse/elements/beta_absolute") == true) {
             muse.loadFromOsc(muse.beta_absolute, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/beta_absolute: " + arr2str(muse.beta_absolute));
+                println("received /muse/elements/beta_absolute: " + Arrays.toString(muse.beta_absolute));
         } else if (msg.checkAddrPattern("/muse/elements/gamma_absolute") == true) {
             muse.loadFromOsc(muse.gamma_absolute, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/gamma_absolute: " + arr2str(muse.gamma_absolute));
+                println("received /muse/elements/gamma_absolute: " + Arrays.toString(muse.gamma_absolute));
         } //*************************
         // catch and report session scores
         else if (msg.checkAddrPattern("/muse/elements/delta_session_score") == true) {
             muse.loadFromOsc(muse.delta_session, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/delta_session_score: " + arr2str(muse.delta_session));
+                println("received /muse/elements/delta_session_score: " + Arrays.toString(muse.delta_session));
         } else if (msg.checkAddrPattern("/muse/elements/theta_session_score") == true) {
             muse.loadFromOsc(muse.theta_session, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/theta_session_score: " + arr2str(muse.theta_session));
+                println("received /muse/elements/theta_session_score: " + Arrays.toString(muse.theta_session));
         } else if (msg.checkAddrPattern("/muse/elements/alpha_session_score") == true) {
             muse.loadFromOsc(muse.alpha_session, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/alpha_session_score: " + arr2str(muse.alpha_session));
+                println("received /muse/elements/alpha_session_score: " + Arrays.toString(muse.alpha_session));
         } else if (msg.checkAddrPattern("/muse/elements/beta_session_score") == true) {
             muse.loadFromOsc(muse.beta_session, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/beta_session_score: " + arr2str(muse.beta_session));
+                println("received /muse/elements/beta_session_score: " + Arrays.toString(muse.beta_session));
         } else if (msg.checkAddrPattern("/muse/elements/gamma_session_score") == true) {
             muse.loadFromOsc(muse.gamma_session, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/gamma_session_score: " + arr2str(muse.gamma_session));
+                println("received /muse/elements/gamma_session_score: " + Arrays.toString(muse.gamma_session));
         } //*************************
         // catch and report relative bandwidth values
         else if (msg.checkAddrPattern("/muse/elements/delta_relative") == true) {
             muse.loadFromOsc(muse.delta_rel, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/delta_relative: " + arr2str(muse.delta_rel));
+                println("received /muse/elements/delta_relative: " + Arrays.toString(muse.delta_rel));
         } else if (msg.checkAddrPattern("/muse/elements/theta_relative") == true) {
             muse.loadFromOsc(muse.theta_rel, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/theta_relative: " + arr2str(muse.theta_rel));
+                println("received /muse/elements/theta_relative: " + Arrays.toString(muse.theta_rel));
         } else if (msg.checkAddrPattern("/muse/elements/alpha_relative") == true) {
             muse.loadFromOsc(muse.alpha_rel, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/alpha_relative: " + arr2str(muse.alpha_rel));
+                println("received /muse/elements/alpha_relative: " + Arrays.toString(muse.alpha_rel));
         } else if (msg.checkAddrPattern("/muse/elements/beta_relative") == true) {
             muse.loadFromOsc(muse.beta_rel, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/beta_relative: " + arr2str(muse.beta_rel));
+                println("received /muse/elements/beta_relative: " + Arrays.toString(muse.beta_rel));
         } else if (msg.checkAddrPattern("/muse/elements/gamma_relative") == true) {
             muse.loadFromOsc(muse.gamma_rel, msg, 4);
             if (verboseMuse)
-                println("received /muse/elements/gamma_relative: " + arr2str(muse.gamma_rel));
+                println("received /muse/elements/gamma_relative: " + Arrays.toString(muse.gamma_rel));
         } // concentration and mellow metrics
         else if (msg.checkAddrPattern("/muse/elements/experimental/concentration") == true) {
             muse.concentration = msg.get(0).floatValue();

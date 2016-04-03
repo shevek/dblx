@@ -20,13 +20,12 @@ import org.anarres.dblx.iface.muse.net.MuseConnect;
 public class UIMuseControl extends UIWindow {
 
     // requires the MuseConnect and MuseHUD objects to be created on the global space
-
     private MuseConnect muse;
     private final static int WIDTH = 140;
     private final static int HEIGHT = 50;
 
     public UIMuseControl(UI ui, MuseConnect muse, float x, float y) {
-        super(lx.ui, "MUSE CONTROL", x, y, WIDTH, HEIGHT);
+        super(ui, "MUSE CONTROL", x, y, WIDTH, HEIGHT);
         this.muse = muse;
         float yp = UIWindow.TITLE_LABEL_HEIGHT;
 
@@ -39,7 +38,7 @@ public class UIMuseControl extends UIWindow {
                 .addToContainer(this);
         bMuseActivated.addListener(new LXParameterListener() {
             public void onParameterChanged(LXParameter parameter) {
-                museActivated = parameter.getValue() > 0.;
+                // TODO museActivated = parameter.getValue() > 0f;
             }
         });
         yp += 24;
