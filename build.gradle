@@ -35,12 +35,13 @@ subprojects {
 project(':dblx-core') {
 	dependencies {
 		compile 'com.google.guava:guava:18.0'
+		compile 'org.jgrapht:jgrapht-core:0.9.1'
 
 		// compile 'org.processing:processing-complete:3.0.1'
 		compile 'org.processing:core:3.0.1'
-		compile 'org.processing:net:3.0.1'
-		compile 'org.processing:pde:3.0.1'
-		compile 'org.processing:serial:3.0.1'
+		// compile 'org.processing:net:3.0.1'
+		// compile 'org.processing:pde:3.0.1'
+		// compile 'org.processing:serial:3.0.1'
 
 		compile 'org.anarres.mirrors.heronarts:p3lx:1.0.0-SNAPSHOT'
 
@@ -75,15 +76,30 @@ project(':dblx-output-beaglebone') {
 }
 
 project(':dblx-package') {
-	apply plugin: 'application'
-
-	mainClassName = 'org.anarres.dblx.core.Main'
-
 	dependencies {
 		compile project(':dblx-core')
 		compile project(':dblx-ui')
 		compile project(':dblx-iface-muse')
 		compile project(':dblx-iface-evolution')
 		compile project(':dblx-output-beaglebone')
+	}
+
+	apply plugin: 'application'
+	mainClassName = 'org.anarres.dblx.core.Main'
+
+	apply plugin: 'nebula.ospackage'
+
+	ospackage {
+		packageName = "dblx"
+		version = project.version + new Date().format(".yyyyMMdd.HHmmss")
+
+		packageDescription = "Dr. Brainlove LED Lighting Controller."
+		packager = "Shevek <shevek@anarres.org>"
+		vendor = packager
+		url = "https://github.com/shevek/dblx/"
+		os = LINUX
+
+		into "/opt/dblx"
+
 	}
 }

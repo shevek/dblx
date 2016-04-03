@@ -29,17 +29,19 @@ public class UIPointCloudVBO {
     int vertexBufferObjectName;
 
     UIPointCloudVBO(@Nonnull Core core) {
+        this.core = core;
+
         // Load shader
         shader = core.lx.applet.loadShader("frag.glsl", "vert.glsl");
         // Create a buffer for vertex data
         vertexData = ByteBuffer
-                .allocateDirect(model.points.size() * 7 * Float.SIZE / 8)
+                .allocateDirect(core.model.points.size() * 7 * Float.SIZE / 8)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer();
 
         // Put all the points into the buffer
         vertexData.rewind();
-        for (LXPoint point : model.points) {
+        for (LXPoint point : core.model.points) {
             // Each point has 7 floats, XYZRGBA
             vertexData.put(point.x);
             vertexData.put(point.y);
@@ -63,10 +65,10 @@ public class UIPointCloudVBO {
         core.lx.applet.endPGL();
     }
 
-    void draw(color[] colors) {
+    void draw(int[] colors) {
         // Put our new colors in the vertex data
         for (int i = 0; i < colors.length; ++i) {
-            color c = colors[i];
+            int c = colors[i];
 
             vertexData.put(7 * i + 3, (0xff & (c >> 16)) / 255f); // R
             vertexData.put(7 * i + 4, (0xff & (c >> 8)) / 255f); // G

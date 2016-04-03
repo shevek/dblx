@@ -1,5 +1,6 @@
 package org.anarres.dblx.core.model;
 
+import com.google.common.base.Stopwatch;
 import heronarts.lx.model.LXModel;
 import heronarts.lx.model.LXPoint;
 import java.io.File;
@@ -10,8 +11,6 @@ import java.util.List;
 import java.util.TreeMap;
 import processing.core.PVector;
 import processing.data.Table;
-import static com.sun.xml.internal.ws.client.ContentNegotiation.none;
-import static javax.management.Query.not;
 import static org.anarres.dblx.core.Core.logTime;
 
 /** ******************************************************************** MODEL
@@ -54,113 +53,14 @@ import static org.anarres.dblx.core.Core.logTime;
  ************************************************************************* * */
 public class LXGraphModel extends LXModel {
 
-    //********************************************************************* NODE
-    /**
-     * Connection point for bars, usually virtual except to define bars themselves.
-     * Name, coordinates, and other properties.
-     * Adjacent bars and nodes.
-     * Pixel mapping, for effects at nodes?
-     *********************************************************************** * */
-    public class Node extends LXModel {
-
-        public final String name;
-        public final float x, y, z;
-        public final List<String> tags;
-        public final PVector xyz;
-        //public final List<String> properties = new ArrayList<String>();
-        //public final List<Node> adjacent_nodes = new ArrayList<Node>();
-        //public final List<Bar> adjacent_bars = new ArrayList<Bar>();
-
-        /** Constructor
-         */
-        public Node(String name, float x, float y, float z, String[] tags) {
-            this.name = name;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.tags = new ArrayList<String>(Arrays.asList(tags));
-            this.xyz = new PVector(x, y, z);
-        }
-
-        public Node(String name, float x, float y, float z, String tags) {
-            this(name, x, y, z, tags.trim().split("\\s+"));
-        }
-    }
-
-    //********************************************************************** BAR
-    /**
-     * Edges between nodes with strips of LEDs along their length.
-     * Name, nodes, direction, and other properties.
-     * Adjacent bars.
-     * Pixel map, reversed when traversing opposite direction.
-     *********************************************************************** * */
-    public static class Bar extends LXModel {
-
-        public final String name;
-        public final Node node1;
-        public final Node node2;
-        public final int channel;
-        public final List<String> tags;
-        public final boolean reversed;
-        public final Bar pair;
-
-        //private LXPoint[] points;
-        private final float pixel_density;
-        private final float pixel_buffer;
-        private final String pixel_layout;
-        //public final List<Bar> adjacent_bars = new ArrayList<Bar>();
-
-        /**
-         * Constructor
-         */
-        public Bar(Node node1, Node node2, int channel, String[] tags,
-                float density, float buffer, String layout) {
-            this.name = node1.name + "-" + node2.name;
-            this.node1 = node1;
-            this.node2 = node2;
-            this.channel = channel;
-            this.tags = new ArrayList<String>(Arrays.asList(tags));
-
-            this.reversed = false;
-            this.pixel_buffer = buffer;
-            this.pixel_density = density;
-            this.pixel_layout = layout;
-        }
-
-        public Bar(Node node1, Node node2, int channel, String tags,
-                float density, float buffer, String layout) {
-            //String[] tag_list = tags.trim().split("\\s+");
-            //this(node1, node2, tag_list, rev, density, buffer, layout);
-            this(node1, node2, channel, tags.trim().split("\\s+"),
-                    rev, density, buffer, layout);
-        }
-
-        public Bar(Node node1, Node node2, int channel, String tags) {
-            this(node1, node2, channel, tags, rev, none, none, none);
-        }
-
-        /**
-         * Create the same bar in the opposite direction for directed traversals.
-         */
-        private Bar reverse() {
-            Bar rev = new Bar(this.node2, this.node1, this.channel, this.tags,
-                    this.density, this.buffer, this.layout);
-            rev.rev = !this.rev;
-            rev.strip = this.strip;
-            rev.points = Collections.reverse(this.points);
-            rev.pair = this;
-            this.pair = rev;
-            return rev;
-        }
-    }
 
     //***************************************************** FIELDS AND CONSTANTS
     //-------------- Constants
-    String DIR_MAPS = "models";
-    String FILE_PARAMS = "params.csv";
-    String FILE_NODES = "nodes.csv";
-    String FILE_BARS = "bars.csv";
-    String FILE_PIXELS = "pixels.csv";
+    private static final String DIR_MAPS = "models";
+    private static final String FILE_PARAMS = "params.csv";
+    private static final String FILE_NODES = "nodes.csv";
+    private static final String FILE_BARS = "bars.csv";
+    private static final String FILE_PIXELS = "pixels.csv";
 
     //-------------- Fields
     //Note that these are stored in maps, not lists. 
@@ -194,7 +94,7 @@ public class LXGraphModel extends LXModel {
     //============== Physical Hardware Limitations
     // TODO: These and other parameters should probably be globals instead
     // TODO: This is only here so it compiles temporarily.
-    public ArrayList<int[]> channelMap;
+    public List<int[]> channelMap;
 
     public final int max_pixels_per_channel = 500;
 
@@ -207,6 +107,7 @@ public class LXGraphModel extends LXModel {
      *
      *********************************************************************** * */
     public LXGraphModel(String model_name) {
+        // Stopwatch stopwatch = Stopwatch.createStarted();
 
         logTime("-- loading model " + model_name);
 
@@ -267,8 +168,11 @@ public class LXGraphModel extends LXModel {
             Bar bar = new Bar(
                     node1,
                     node2,
-                    row.getString("Channel"),
-                    row.getString("Tags")
+                    row.getInt("Channel"),
+                    row.getString("Tags"),
+                    pixel_density,
+                    pixel_buffer,
+                    pixel_layout
             );
 
             this.add_bar(bar);
@@ -308,7 +212,7 @@ public class LXGraphModel extends LXModel {
     //******************************************************* ADD NODES AND BARS
     /** Add node to model. */
     private void add_node(Node node) {
-        if (this.nodes.get(node.name)) {
+        if (this.nodes.get(node.name) != null) {
             throw new RuntimeException("Node " + node.name + " already exists!");
         }
         this.nodes.put(node.name, node);
@@ -319,9 +223,6 @@ public class LXGraphModel extends LXModel {
     private void add_bar(Bar bar) {
 
         List<LXPoint> points = new ArrayList<LXPoint>();
-        float density, rate, buffer;
-        float len_bar, len_zone, len_true, len_waste;
-        String layout;
 
         PVector vector = new PVector(); // vector along the bar
         PVector norm = new PVector(); // normalized vector
@@ -331,51 +232,40 @@ public class LXGraphModel extends LXModel {
         int count = 0; // number of pixels
 
         //============ Validation
-        if (!this.get_node(bar.node1.name)) {
+        if (this.get_node(bar.node1.name) == null) {
             throw new RuntimeException("Unknown node " + bar.node1.name);
         }
-        if (!this.get_node(bar.node2.name)) {
+        if (this.get_node(bar.node2.name) == null) {
             throw new RuntimeException("Unknown node " + bar.node2.name);
         }
-        if (this.get_bar(bar.node1, bar.node2)) {
+        if (this.get_bar(bar.node1, bar.node2) != null) {
             throw new RuntimeException("Bar " + bar.name + " already exists!");
         }
 
-        //============ Set defaults and initialize
-        if (bar.pixel_density == null) {
-            bar.pixel_density = model.pixel_density;
-        }
-        if (bar.pixel_buffer == null) {
-            bar.pixel_buffer = model.pixel_buffer;
-        }
-        if (bar.pixel_layout == null) {
-            bar.pixel_layout = model.pixel_layout;
-        }
-
-        density = bar.pixel_density;
-        buffer = bar.pixel_buffer;
-        layout = bar.pixel_layout;
-        rate = 1.0 / density;
+        float density = bar.pixel_density;
+        float buffer = bar.pixel_buffer;
+        String layout = bar.pixel_layout;
+        float rate = 1f / density;
         if (buffer == 0.f) {
             buffer = rate;
         } // pixels never start right at a node
 
         //============ Vector Magic
-        PVector.sub(node2.xyz, node1.xyz, vector);
-        PVector.normalize(vector, norm);
+        PVector.sub(bar.node2.xyz, bar.node1.xyz, vector);
+        vector.normalize(norm);
 
-        len_bar = vector.mag();
-        len_zone = len_bar - (2.0 * buffer);
+        float len_bar = vector.mag();
+        float len_zone = len_bar - (2f * buffer);
         count = (int) Math.floor(len_zone * density);
-        len_true = (float) count / density;
-        len_waste = len_zone - len_zone;
+        float len_true = (float) count / density;
+        float len_waste = len_zone - len_zone;
 
         // offset coordinates for first pixel
         if (layout == "fill") {
             PVector.mult(norm, buffer, start);
             PVector.mult(norm, rate, step);
         } else if (layout == "center") {
-            PVector.mult(norm, buffer + (len_waste / 2.0), start);
+            PVector.mult(norm, buffer + (len_waste / 2f), start);
             PVector.mult(norm, rate, step);
         }
         // move to true coordinates

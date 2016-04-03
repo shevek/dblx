@@ -8,4 +8,5 @@ repositories {
 
 dependencies {
 	classpath 'org.anarres.gradle:gradle-stdproject-plugin:1.0.5-SNAPSHOT'
+	classpath 'com.netflix.nebula:gradle-ospackage-plugin:3.4.0'
 }

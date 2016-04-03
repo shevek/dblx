@@ -10,6 +10,7 @@ import heronarts.lx.parameter.DiscreteParameter;
 import heronarts.lx.pattern.LXPattern;
 import heronarts.lx.transition.LXTransition;
 import heronarts.p3lx.P3LX;
+import org.anarres.dblx.core.model.LXGraphModel;
 import org.anarres.dblx.core.palettes.HueCyclePalette;
 
 /**
@@ -36,9 +37,14 @@ public class Core {
     // public NerveBundle nervebundle;
     public HueCyclePalette palette;
 
+    public LXGraphModel model;
+
     // global parameter to adjust output brightness
     // MJP: unclear if this affects display brightness as well
     public double global_brightness = 1.0;
+
+    public boolean simulationOn;
+    public long simulationNanos;
 
     public LXEffect getSelectedEffect() {
         return effectsArr[selectedEffect.getValuei()];

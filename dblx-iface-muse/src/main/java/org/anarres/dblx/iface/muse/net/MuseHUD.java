@@ -5,7 +5,10 @@
  */
 package org.anarres.dblx.iface.muse.net;
 
+import heronarts.lx.LX;
+import processing.core.PConstants;
 import processing.core.PGraphics;
+import static processing.core.PApplet.println;
 
 /**
  *
@@ -50,7 +53,7 @@ public class MuseHUD {
         pgMuseHUD = createGraphics(WIDTH, HEIGHT);
 
         // set up horseshoe colors
-        colorMode(RGB, 255);
+        colorMode(PConstants.RGB, 255);
         morange = color(204, 102, 0);
         mgreen = color(102, 204, 0);
         mblue = color(0, 102, 204);
@@ -70,7 +73,7 @@ public class MuseHUD {
     }
 
     private void updateHUD(PGraphics image) {
-        colorMode(RGB, 255);
+        colorMode(PConstants.RGB, 255);
         int backColor = 50; //dark gray
         int foreColor = 200; // not quite white
         fill(foreColor);
