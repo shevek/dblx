@@ -114,4 +114,8 @@ project(':dblx-package') {
 	buildDeb {
 		dependsOn installApp
 	}
+
+	buildRpm {
+		dependsOn installApp
+	}
 }
