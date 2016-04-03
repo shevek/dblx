@@ -190,7 +190,6 @@ public class LXGraphModel extends LXModel {
     }
 
     private void automap_bars() {
-
     }
 
     //******************************************************* GET NODES AND BARS

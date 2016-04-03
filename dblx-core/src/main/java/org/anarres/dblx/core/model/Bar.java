@@ -8,6 +8,7 @@ package org.anarres.dblx.core.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
  * Edges between nodes with strips of LEDs along their length.
@@ -17,7 +18,7 @@ import java.util.List;
  *
  * @author shevek
  */
-public class Bar {
+public class Bar extends DefaultEdge {
 
     public final String name;
     public final Node node1;
