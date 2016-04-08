@@ -36,6 +36,7 @@ project(':dblx-core') {
 	dependencies {
 		compile 'com.google.guava:guava:18.0'
 		compile 'org.jgrapht:jgrapht-core:0.9.1'
+		compile 'org.jscience:jscience:4.3.1'
 
 		// compile 'org.processing:processing-complete:3.0.1'
 		compile 'org.processing:core:3.0.1'
@@ -47,6 +48,8 @@ project(':dblx-core') {
 
 		compile 'org.biojava:jcolorbrewer:5.2'
 		compile 'com.opencsv:opencsv:3.7'
+
+		testCompile 'org.choco-solver:choco-graph:3.3.0'
 	}
 }
 

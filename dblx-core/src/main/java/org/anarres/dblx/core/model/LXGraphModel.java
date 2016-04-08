@@ -1,5 +1,7 @@
 package org.anarres.dblx.core.model;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
 import heronarts.lx.model.LXModel;
 import heronarts.lx.model.LXPoint;
 import java.io.File;
@@ -145,13 +147,14 @@ public class LXGraphModel extends LXModel {
     // ----------- Load Nodes
     private void load_nodes(String path) {
         Table table_nodes = core.lx.applet.loadTable(path, "header,tsv");
+        Splitter splitter = Splitter.on(CharMatcher.BREAKING_WHITESPACE);
         for (processing.data.TableRow row : table_nodes.rows()) {
             Node node = new Node(
                     row.getString("Node"),
-                    row.getFloat("X"),
-                    row.getFloat("Y"),
-                    row.getFloat("Z"),
-                    row.getString("Tags")
+                    (long) row.getFloat("X"),
+                    (long) row.getFloat("Y"),
+                    (long) row.getFloat("Z"),
+                    splitter.splitToList(row.getString("Tags"))
             );
             this.add_node(node);
         }
@@ -162,17 +165,18 @@ public class LXGraphModel extends LXModel {
         PVector xyz1, xyz2;
         PVector dir;
         Table table_bars = core.lx.applet.loadTable(path, "header,tsv");
+        Splitter splitter = Splitter.on(CharMatcher.BREAKING_WHITESPACE);
         for (processing.data.TableRow row : table_bars.rows()) {
             Node node1 = this.nodes.get(row.getString("Node1"));
             Node node2 = this.nodes.get(row.getString("Node2"));
             Bar bar = new Bar(
-                    node1,
-                    node2,
-                    row.getInt("Channel"),
-                    row.getString("Tags"),
-                    pixel_density,
-                    pixel_buffer,
-                    pixel_layout
+                    row.getString("Node1"),
+                    row.getString("Node2"),
+                    // row.getInt("Channel"),
+                    splitter.splitToList(row.getString("Tags"))
+                    // pixel_density,
+                    // pixel_buffer,
+                    // pixel_layout
             );
 
             this.add_bar(bar);
@@ -230,27 +234,16 @@ public class LXGraphModel extends LXModel {
         PVector coords = new PVector(); // current coordinates
         int count = 0; // number of pixels
 
-        //============ Validation
-        if (this.get_node(bar.node1.name) == null) {
-            throw new RuntimeException("Unknown node " + bar.node1.name);
-        }
-        if (this.get_node(bar.node2.name) == null) {
-            throw new RuntimeException("Unknown node " + bar.node2.name);
-        }
-        if (this.get_bar(bar.node1, bar.node2) != null) {
-            throw new RuntimeException("Bar " + bar.name + " already exists!");
-        }
-
-        float density = bar.pixel_density;
-        float buffer = bar.pixel_buffer;
-        String layout = bar.pixel_layout;
+        float density = pixel_density;
+        float buffer = pixel_buffer;
+        String layout = pixel_layout;
         float rate = 1f / density;
         if (buffer == 0.f) {
             buffer = rate;
         } // pixels never start right at a node
 
         //============ Vector Magic
-        PVector.sub(bar.node2.xyz, bar.node1.xyz, vector);
+        PVector.sub(get_node(bar.node2).xyz, get_node(bar.node1).xyz, vector);
         vector.normalize(norm);
 
         float len_bar = vector.mag();
@@ -268,7 +261,7 @@ public class LXGraphModel extends LXModel {
             PVector.mult(norm, rate, step);
         }
         // move to true coordinates
-        PVector.add(start, bar.node1.xyz, coords);
+        PVector.add(start, get_node(bar.node1).xyz, coords);
 
         //---------- map channels 
         // See if we need to add a new channel
@@ -298,7 +291,7 @@ public class LXGraphModel extends LXModel {
          rev = bar.reverse();
          */
         //------------ Add Points and Bars to Model
-        this.bars.get(bar.node1.name).put(bar.node2.name, bar);
+        this.bars.get(bar.node1).put(bar.node2, bar);
         // this.bars.get(node2.name).put(node1.name, rev);
 
     }
