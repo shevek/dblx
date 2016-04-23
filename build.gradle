@@ -18,6 +18,7 @@ subprojects {
 
 	repositories {
 		mavenLocal()
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 	}
 
 	dependencies {
@@ -37,6 +38,9 @@ project(':dblx-core') {
 		compile 'com.google.guava:guava:18.0'
 		compile 'org.jgrapht:jgrapht-core:0.9.1'
 		compile 'org.jscience:jscience:4.3.1'
+
+		compile 'javax.vecmath:vecmath:1.5.2'
+		// compile 'org.scijava:vecmath:1.6.0-scijava-2'
 
 		// compile 'org.processing:processing-complete:3.0.1'
 		compile 'org.processing:core:3.0.1'
