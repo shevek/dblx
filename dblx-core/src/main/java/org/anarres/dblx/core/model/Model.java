@@ -18,8 +18,18 @@ import org.jgrapht.graph.SimpleGraph;
  */
 public class Model extends LXModel {
 
+    private final String name;
     private final Map<String, Node> nodes = new HashMap<>();
     private final UndirectedGraph<String, Bar> graph = new SimpleGraph<>(Bar.class);
+
+    public Model(@Nonnull String name) {
+        this.name = name;
+    }
+
+    @Nonnull
+    public String getName() {
+        return name;
+    }
 
     public void addNode(@Nonnull Node node) {
         nodes.put(node.getName(), node);

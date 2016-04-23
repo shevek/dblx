@@ -34,12 +34,15 @@ public class BeagleBoneManager {
         int[] pixIndex = new int[nPixPerChannel * nChannelPerBoard];
         int boardOffset = (boardNum - 1) * nChannelPerBoard;
         for (int i = boardOffset; i < boardOffset + nChannelPerBoard; i++) {
+            // TODO
+            /*
             int[] channelIx = core.model.channelMap.get(i);
             //println("adding channel " + i + ", "+ channelIx.length + " pix");
             for (int j = 0; j < channelIx.length; j++) {
                 //println( i * nPixPerChannel - boardOffset*nPixPerChannel + j);
                 pixIndex[i * nPixPerChannel - boardOffset * nPixPerChannel + j] = channelIx[j];
             }
+            */
         }
         return pixIndex;
     }

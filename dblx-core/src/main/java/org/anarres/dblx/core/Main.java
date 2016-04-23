@@ -5,8 +5,6 @@
  */
 package org.anarres.dblx.core;
 
-import processing.core.PApplet;
-
 /**
  *
  * @author shevek
@@ -14,6 +12,6 @@ import processing.core.PApplet;
 public class Main {
 
     public static void main(String[] args) {
-        PApplet.main(Sketch.class.getName());
+        // PApplet.main(Sketch.class.getName());
     }
 }

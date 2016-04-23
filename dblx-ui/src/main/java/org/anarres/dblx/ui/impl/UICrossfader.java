@@ -9,6 +9,7 @@ import heronarts.p3lx.P3LX;
 import heronarts.p3lx.ui.UIWindow;
 import heronarts.p3lx.ui.component.UISlider;
 import heronarts.p3lx.ui.component.UIToggleSet;
+import javax.annotation.Nonnull;
 import static org.anarres.dblx.core.Core.*;
 
 /**
@@ -25,12 +26,14 @@ public class UICrossfader extends UIWindow {
         new UISlider(4, UIWindow.TITLE_LABEL_HEIGHT, w - 9, 32)
                 .setParameter(lx.engine.getChannel(RIGHT_CHANNEL).getFader())
                 .addToContainer(this);
-        (displayMode = new UIToggleSet(4, UIWindow.TITLE_LABEL_HEIGHT + 36, w - 9, 20))
+        displayMode = new UIToggleSet(4, UIWindow.TITLE_LABEL_HEIGHT + 36, w - 9, 20);
+        displayMode
                 .setOptions(new String[]{"A", "COMP", "B"})
                 .setValue("COMP")
                 .addToContainer(this);
     }
 
+    @Nonnull
     public UICrossfader setDisplayMode(String value) {
         displayMode.setValue(value);
         return this;

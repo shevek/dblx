@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
+import org.anarres.dblx.core.LengthUnit;
 
 /**
  *
@@ -41,9 +42,8 @@ public class ModelLoader {
 
     @Nonnull
     public Model load() throws IOException {
-        Model model = new Model();
+        Model model = new Model(modelName);
 
-        UnitConverter converter = NonSI.INCH.getConverterTo(SI.MILLIMETER);
         Splitter splitter = Splitter.on(CharMatcher.BREAKING_WHITESPACE);
 
         NODES:
@@ -54,9 +54,9 @@ public class ModelLoader {
                 CSVReader reader = newSVReader(in, '\t', 1);
                 for (String[] line : reader) {
                     String name = line[0];
-                    long x = (long) converter.convert(Double.parseDouble(line[1]));
-                    long y = (long) converter.convert(Double.parseDouble(line[2]));
-                    long z = (long) converter.convert(Double.parseDouble(line[3]));
+                    long x = (long) LengthUnit.INCH.toMillimetres(Double.parseDouble(line[1]));
+                    long y = (long) LengthUnit.INCH.toMillimetres(Double.parseDouble(line[2]));
+                    long z = (long) LengthUnit.INCH.toMillimetres(Double.parseDouble(line[3]));
                     List<String> tags = splitter.splitToList(line[4]);
                     model.addNode(new Node(name, x, y, z, tags));
                 }

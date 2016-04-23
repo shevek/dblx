@@ -52,6 +52,7 @@ import static org.anarres.dblx.core.Core.logTime;
  * @author Alex Maki-Jokela
  * @author Alexander D. Scouras
  ************************************************************************* * */
+@Deprecated
 public class LXGraphModel extends LXModel {
 
     //***************************************************** FIELDS AND CONSTANTS
@@ -224,15 +225,11 @@ public class LXGraphModel extends LXModel {
 
     /** Initialize pixels and add bar to the model. */
     private void add_bar(Bar bar) {
-
-        List<LXPoint> points = new ArrayList<LXPoint>();
-
         PVector vector = new PVector(); // vector along the bar
         PVector norm = new PVector(); // normalized vector
         PVector step = new PVector(); // step vector per pixel
         PVector start = new PVector(); // starting coordinates
         PVector coords = new PVector(); // current coordinates
-        int count = 0; // number of pixels
 
         float density = pixel_density;
         float buffer = pixel_buffer;
@@ -248,9 +245,9 @@ public class LXGraphModel extends LXModel {
 
         float len_bar = vector.mag();
         float len_zone = len_bar - (2f * buffer);
-        count = (int) Math.floor(len_zone * density);
+        int count = (int) Math.floor(len_zone * density);
         float len_true = (float) count / density;
-        float len_waste = len_zone - len_zone;
+        float len_waste = len_true - len_zone;
 
         // offset coordinates for first pixel
         if (layout == "fill") {
@@ -275,6 +272,7 @@ public class LXGraphModel extends LXModel {
         pixels_in_model += count;
 
         //------------ Allocate Pixels!
+        List<LXPoint> points = new ArrayList<LXPoint>();
         for (int i = 0; i <= count; i++) {
             LXPoint point = new LXPoint(coords.x, coords.y, coords.z);
             points.add(point);

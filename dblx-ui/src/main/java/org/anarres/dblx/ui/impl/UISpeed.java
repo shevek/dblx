@@ -21,7 +21,7 @@ public class UISpeed extends UIWindow {
 
     final BasicParameter speed;
 
-    UISpeed(@Nonnull final P3LX lx, float x, float y, float w, float h) {
+    public UISpeed(@Nonnull final P3LX lx, float x, float y, float w, float h) {
         super(lx.ui, "SPEED", x, y, w, h);
         speed = new BasicParameter("SPEED", 0.5);
         speed.addListener(new LXParameterListener() {

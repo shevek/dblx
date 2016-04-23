@@ -20,7 +20,7 @@ public class UIBrainlove extends UIWindow {
 
     final BasicParameter g_brightness;
 
-    UIBrainlove(final Core core, float x, float y, float w, float h) {
+    public UIBrainlove(final Core core, float x, float y, float w, float h) {
         super(core.lx.ui, "BRIGHTNESS", x, y, w, h);
         g_brightness = new BasicParameter("BRIGHTNESS", 1.0);
         g_brightness.addListener(new LXParameterListener() {

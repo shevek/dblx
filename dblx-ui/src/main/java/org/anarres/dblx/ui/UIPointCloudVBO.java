@@ -24,9 +24,9 @@ import processing.opengl.PShader;
 public class UIPointCloudVBO {
 
     private final Core core;
-    PShader shader;
-    FloatBuffer vertexData;
-    int vertexBufferObjectName;
+    private final PShader shader;
+    private final FloatBuffer vertexData;
+    private final int vertexBufferObjectName;
 
     UIPointCloudVBO(@Nonnull Core core) {
         this.core = core;

@@ -22,7 +22,7 @@ public class UIDebugText extends UI2dContext {
     private String line1 = "";
     private String line2 = "";
 
-    UIDebugText(@Nonnull P3LX lx, float x, float y, float w, float h) {
+    public UIDebugText(@Nonnull P3LX lx, float x, float y, float w, float h) {
         super(lx.ui, x, y, w, h);
     }
 

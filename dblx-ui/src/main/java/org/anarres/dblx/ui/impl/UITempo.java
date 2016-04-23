@@ -31,7 +31,7 @@ public class UITempo extends UIWindow {
     BasicParameter tempoAdjustFine;
     BasicParameter tempoAdjustCoarse;
 
-    UITempo(@Nonnull final P3LX lx, float x, float y, float w, float h) {
+    public UITempo(@Nonnull final P3LX lx, float x, float y, float w, float h) {
         super(lx.ui, "TEMPO", x, y, w, h);
 
         tempoButton = new UIButton(4, UIWindow.TITLE_LABEL_HEIGHT, w - 75, 20) {

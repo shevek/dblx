@@ -7,6 +7,7 @@ package org.anarres.dblx.core.model;
 
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.vecmath.Vector3f;
 import processing.core.PVector;
 
 //********************************************************************* NODE
@@ -19,6 +20,7 @@ import processing.core.PVector;
 public class Node {
 
     public final String name;
+    // public final Vector3f position;
     /** Position in mm. */
     public final long x;
     /** Position in mm. */
@@ -26,6 +28,7 @@ public class Node {
     /** Position in mm. */
     public final long z;
     public final List<? extends String> tags;
+    // Point3f.
     public final PVector xyz;
     //public final List<String> properties = new ArrayList<String>();
     //public final List<Node> adjacent_nodes = new ArrayList<Node>();

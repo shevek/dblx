@@ -11,7 +11,8 @@ import heronarts.lx.model.LXPoint;
 import heronarts.lx.parameter.BasicParameter;
 import heronarts.lx.parameter.LXParameter;
 import heronarts.lx.parameter.LXParameterListener;
-import org.anarres.dblx.core.Core;
+import javax.annotation.Nonnull;
+import org.anarres.dblx.core.LengthUnit;
 import static processing.core.PApplet.abs;
 
 /**
@@ -22,9 +23,9 @@ public class HueCyclePalette extends LXPalette {
 
     public final BasicParameter zeriod = new BasicParameter("Period", 5000, 0, 30000);
     public final BasicParameter spread = new BasicParameter("Spread", 2, 0, 8);
-    public final BasicParameter center = new BasicParameter("Center", model.cx - 10 * Core.INCHES, model.xMin, model.xMax);
+    public final BasicParameter center = new BasicParameter("Center", model.cx - LengthUnit.INCH.toMillimetres(10L), model.xMin, model.xMax);
 
-    HueCyclePalette(LX lx) {
+    public HueCyclePalette(@Nonnull LX lx) {
         super(lx);
         addParameter(zeriod);
         addParameter(spread);

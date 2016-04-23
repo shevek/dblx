@@ -25,7 +25,7 @@ public class UIEffects extends UIWindow {
 
     private final Core core;
 
-    UIEffects(@Nonnull Core core, float x, float y, float w, float h) {
+    public UIEffects(@Nonnull Core core, float x, float y, float w, float h) {
         super(core.lx.ui, "FX", x, y, w, h);
         this.core = core;
 

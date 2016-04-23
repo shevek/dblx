@@ -11,6 +11,7 @@ import heronarts.lx.pattern.LXPattern;
 import heronarts.lx.transition.LXTransition;
 import heronarts.p3lx.P3LX;
 import org.anarres.dblx.core.model.LXGraphModel;
+import org.anarres.dblx.core.model.Model;
 import org.anarres.dblx.core.palettes.HueCyclePalette;
 
 /**
@@ -19,15 +20,13 @@ import org.anarres.dblx.core.palettes.HueCyclePalette;
  */
 public class Core {
 
+    /** This is the index of the LXEngine channel for the left side of the GUI. */
     public static final int LEFT_CHANNEL = 0;
+    /** This is the index of the LXEngine channel for the right side of the GUI. */
     public static final int RIGHT_CHANNEL = 1;
-    @Deprecated
-    public static final int INCHES = 1;
-    @Deprecated
-    public static final int FEET = 12 * INCHES;
 
     public P3LX lx;
-    // LXGraphModel model;
+    public Model model;
     public LXPattern[] patterns;
     public LXTransition[] transitions;
     // Effects effects;
@@ -36,8 +35,6 @@ public class Core {
 
     // public NerveBundle nervebundle;
     public HueCyclePalette palette;
-
-    public LXGraphModel model;
 
     // global parameter to adjust output brightness
     // MJP: unclear if this affects display brightness as well
