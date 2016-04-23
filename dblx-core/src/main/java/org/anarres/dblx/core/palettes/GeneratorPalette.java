@@ -86,9 +86,8 @@ public class GeneratorPalette {
      * A color palette that algorithmically generates a new color at each
      * step based on the selected color scheme.
      *
+     * @param color Color from which to generate the palette
      * @param scheme Analogous, Monochromatic, Triad, Complementary
-     * @param base_color Color from which to generate the palette
-     * @param loop How to loop once reaching the end of the palette
      * @param steps Number of pixels or timesteps in a comlpete cycle
      */
     public GeneratorPalette(int color, ColorScheme scheme, int steps) {
