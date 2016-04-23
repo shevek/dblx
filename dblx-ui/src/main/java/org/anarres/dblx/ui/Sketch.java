@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import static org.anarres.dblx.core.Core.logTime;
 
 /**
  *
@@ -71,12 +70,12 @@ public class Sketch extends PApplet {
         //framerates
         frameRate(FPS_TARGET);
         noSmooth();
-        logTime("Created viewport");
+        LOG.debug("Created viewport");
 
         //==================================================================== Model 
         //Actually builds the model (per mappings.pde)
         final Model model = core.model;
-        logTime("Loaded Model");
+        LOG.debug("Loaded Model");
         //model.initialize();
         //model.setChannelMap();
   /* uncomment to check pixel indexes
@@ -85,43 +84,43 @@ public class Sketch extends PApplet {
          println(model.channelMap.get(i)); 
          }*/
 
-        logTime("Initialized Model " + model.getName()
+        LOG.debug("Initialized Model " + model.getName()
                 + ". Total pixels: " + model.points.size());
 
         //===================================================================== P2LX
         P3LX lx = new P3LX(this, model);
         lx.enableKeyboardTempo();
-        logTime("Initialized LX");
+        LOG.debug("Initialized LX");
 
         //-------------- Engine
         LXEngine engine = lx.engine;
         //engine.framesPerSecond.setValue(FPS_TARGET);
         engine.setThreaded(false);
-        logTime("Initialized Engine");
+        LOG.debug("Initialized Engine");
 
         //-------------- Patterns
         engine.setPatterns(Library.patterns(lx));
         engine.addChannel(Library.patterns(lx));
-        logTime("Initialized Patterns");
+        LOG.debug("Initialized Patterns");
 
         //-------------- Transitions
         LXTransition[] transitions = Library.transitions(lx);
-        engine.getChannel(Core.RIGHT_CHANNEL)
+        engine.getChannel(Core.LX_CHANNEL_RIGHT)
                 .setFaderTransition(transitions[0]);
-        logTime("Initialized Transitions");
+        LOG.debug("Initialized Transitions");
 
         //-------------- Effects
         lx.addEffects(Library.effects(lx));
         // TODO: getEffects() may contain effects not added above for various reasons.
         core.selectedEffect = new DiscreteParameter("EFFECT", lx.getEffects().size());
-        logTime("Built Effects");
+        LOG.debug("Built Effects");
 
         //-------------- Presets
         // PresetManager presetManager = new PresetManager(lx);
-        // logTime("Loaded Presets");
+        // LOG.debug("Loaded Presets");
         //-------------- MIDI
         //midiEngine = new MidiEngine();
-        //logTime("Setup MIDI devices");
+        //LOG.debug("Setup MIDI devices");
         //-------------- Nerve Bundle
         // nervebundle = new NerveBundle(lx);
         //-------------- Global Palette
@@ -130,7 +129,7 @@ public class Sketch extends PApplet {
         palette.hueMode.setValue(LXPalette.HUE_MODE_CYCLE);
         engine.getChannel(0).setPalette(palette);
         engine.addLoopTask(palette);
-        logTime("Created deprecated global color palette");
+        LOG.debug("Created deprecated global color palette");
 
         final UICrossfader uiCrossfader = new UICrossfader(core.lx, width / 2 - 130, height - 90, 180, 86);
 
@@ -139,7 +138,7 @@ public class Sketch extends PApplet {
         // TODO: this should gracefully handle lack of Muse OSC input
         // muse = new MuseConnect(this, MUSE_OSCPORT);
         // museHUD = new MuseHUD(muse);
-        // logTime("added Muse OSC parser and HUD");
+        // LOG.debug("added Muse OSC parser and HUD");
         //====================================================== 3D Simulation Layer
         //adjust this if you want to play with the initial camera setting.
         // A camera layer makes an OpenGL layer that we can easily 
@@ -180,8 +179,8 @@ public class Sketch extends PApplet {
         //lx.ui.addLayer(new UIGlobalControl(lx.ui, width-288, 4));
         //lx.ui.addLayer(new UICameraControl(lx.ui, context, 4, 450));
         //MJP channel initialization is now global
-        LXChannel L = lx.engine.getChannel(Core.LEFT_CHANNEL);
-        LXChannel R = lx.engine.getChannel(Core.RIGHT_CHANNEL);
+        LXChannel L = lx.engine.getChannel(Core.LX_CHANNEL_LEFT);
+        LXChannel R = lx.engine.getChannel(Core.LX_CHANNEL_RIGHT);
 
         UIChannelControl uiPatternL = new UIChannelControl(lx.ui, L, "PRIMARY PATTERNS", 16, 4, 4);
         UIChannelControl uiPatternR = new UIChannelControl(lx.ui, R, "MIXING PATTERNS", 16, width - 144, 4);
@@ -216,17 +215,17 @@ public class Sketch extends PApplet {
             lx.ui.addLayer(layer);
         }
 
-        logTime("Built UI");
+        LOG.debug("Built UI");
 
         //==================================================== Output to Controllers
         /*
          if (OUTPUT == null) {
-         logTime("Not setting up hardware output");
+         LOG.debug("Not setting up hardware output");
          } else {
          lx.ui.addLayer(new UIOutput(lx.ui, width - 144, 400, 140, 106));
          if (OUTPUT == "BeagleBone") {
          addBeagleBones((LX) lx);
-         logTime("Built output clients");
+         LOG.debug("Built output clients");
          }
          }
          */

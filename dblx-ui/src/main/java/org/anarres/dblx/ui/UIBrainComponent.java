@@ -12,8 +12,8 @@ import org.anarres.dblx.core.Core;
 import org.anarres.dblx.ui.impl.UICrossfader;
 import processing.core.PConstants;
 import processing.core.PGraphics;
-import static org.anarres.dblx.core.Core.LEFT_CHANNEL;
-import static org.anarres.dblx.core.Core.RIGHT_CHANNEL;
+import static org.anarres.dblx.core.Core.LX_CHANNEL_LEFT;
+import static org.anarres.dblx.core.Core.LX_CHANNEL_RIGHT;
 
 /**
  * Selects colors for each point based on patterns/transitions/channels.
@@ -40,10 +40,10 @@ public class UIBrainComponent extends UI3dComponent {
         String displayMode = uiCrossfader.getDisplayMode();
         switch (displayMode) {
             case "A":
-                simulationColors = core.lx.engine.getChannel(LEFT_CHANNEL).getColors();
+                simulationColors = core.lx.engine.getChannel(LX_CHANNEL_LEFT).getColors();
                 break;
             case "B":
-                simulationColors = core.lx.engine.getChannel(RIGHT_CHANNEL).getColors();
+                simulationColors = core.lx.engine.getChannel(LX_CHANNEL_RIGHT).getColors();
                 break;
         }
         long simulationStart = System.nanoTime();

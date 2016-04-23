@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import org.anarres.dblx.core.Core;
-import static org.anarres.dblx.core.Core.RIGHT_CHANNEL;
+import static org.anarres.dblx.core.Core.LX_CHANNEL_RIGHT;
 
 /**
  *
@@ -33,7 +33,7 @@ public class UIBlendMode extends UIWindow {
                 .setItems(items)
                 .addToContainer(this);
 
-        core.lx.engine.getChannel(RIGHT_CHANNEL)
+        core.lx.engine.getChannel(LX_CHANNEL_RIGHT)
                 .addListener(new LXChannel.AbstractListener() {
                     @Override
                     public void faderTransitionDidChange(LXChannel channel,
@@ -64,7 +64,7 @@ public class UIBlendMode extends UIWindow {
         @Override
         public boolean isSelected() {
             return this.transition == lx.engine
-                    .getChannel(RIGHT_CHANNEL)
+                    .getChannel(LX_CHANNEL_RIGHT)
                     .getFaderTransition();
         }
 
@@ -76,7 +76,7 @@ public class UIBlendMode extends UIWindow {
         @Override
         public void onMousePressed() {
             lx.engine
-                    .getChannel(RIGHT_CHANNEL)
+                    .getChannel(LX_CHANNEL_RIGHT)
                     .setFaderTransition(this.transition);
         }
     }

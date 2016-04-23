@@ -10,7 +10,7 @@ import heronarts.p3lx.ui.UIWindow;
 import heronarts.p3lx.ui.component.UISlider;
 import heronarts.p3lx.ui.component.UIToggleSet;
 import javax.annotation.Nonnull;
-import static org.anarres.dblx.core.Core.RIGHT_CHANNEL;
+import static org.anarres.dblx.core.Core.LX_CHANNEL_RIGHT;
 
 /**
  *
@@ -24,7 +24,7 @@ public class UICrossfader extends UIWindow {
         super(lx.ui, "CROSSFADER", x, y, w, h);
 
         new UISlider(4, UIWindow.TITLE_LABEL_HEIGHT, w - 9, 32)
-                .setParameter(lx.engine.getChannel(RIGHT_CHANNEL).getFader())
+                .setParameter(lx.engine.getChannel(LX_CHANNEL_RIGHT).getFader())
                 .addToContainer(this);
         displayMode = new UIToggleSet(4, UIWindow.TITLE_LABEL_HEIGHT + 36, w - 9, 20);
         displayMode

@@ -10,9 +10,10 @@ import java.util.List;
 import java.util.TreeMap;
 import javax.annotation.Nonnull;
 import org.anarres.dblx.core.Core;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import processing.core.PVector;
 import processing.data.Table;
-import static org.anarres.dblx.core.Core.logTime;
 
 /** ******************************************************************** MODEL
  * This is the model for the whole brain. It contains four mappings, two of
@@ -55,6 +56,7 @@ import static org.anarres.dblx.core.Core.logTime;
 @Deprecated
 public class LXGraphModel extends LXModel {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LXGraphModel.class);
     //***************************************************** FIELDS AND CONSTANTS
     //-------------- Constants
     private static final String DIR_MAPS = "models";
@@ -109,10 +111,9 @@ public class LXGraphModel extends LXModel {
      *
      *********************************************************************** * */
     public LXGraphModel(@Nonnull Core core, String model_name) {
-        // Stopwatch stopwatch = Stopwatch.createStarted();
         this.core = core;
 
-        logTime("-- loading model " + model_name);
+        LOG.debug("-- loading model %s" + model_name);
 
         this.nodes = new TreeMap<>();
         this.bars = new TreeMap<>();
@@ -122,13 +123,13 @@ public class LXGraphModel extends LXModel {
         String path_pixels = DIR_MAPS + "/" + model_name + "/" + FILE_PIXELS;
 
         this.load_params(path_params);
-        logTime("---- loaded model parameters");
+        LOG.debug("---- loaded model parameters");
         this.load_nodes(path_nodes);
-        logTime("---- loaded nodes");
+        LOG.debug("---- loaded nodes");
         this.load_bars(path_bars);
-        logTime("---- loaded bars");
+        LOG.debug("---- loaded bars");
         this.load_pixels(path_pixels);
-        logTime("---- loaded pixels");
+        LOG.debug("---- loaded pixels");
 
         // this.initialize_pixels();
     }

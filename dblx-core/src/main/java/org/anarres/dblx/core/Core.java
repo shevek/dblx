@@ -23,9 +23,9 @@ public class Core {
 
     private static final Logger LOG = LoggerFactory.getLogger(Core.class);
     /** This is the index of the LXEngine channel for the left side of the GUI. */
-    public static final int LEFT_CHANNEL = 0;
+    public static final int LX_CHANNEL_LEFT = 0;
     /** This is the index of the LXEngine channel for the right side of the GUI. */
-    public static final int RIGHT_CHANNEL = 1;
+    public static final int LX_CHANNEL_RIGHT = 1;
 
     public P3LX lx;
     public Model model;
@@ -48,13 +48,4 @@ public class Core {
     public LXEffect getSelectedEffect() {
         return effectsArr[selectedEffect.getValuei()];
     }
-    private static long lastMillis = System.currentTimeMillis();
-
-    @Deprecated
-    public static void logTime(String evt) {
-        long now = System.currentTimeMillis();
-        LOG.debug("%5d ms: %s\n", (now - lastMillis), evt);
-        lastMillis = now;
-    }
-
 }
