@@ -34,6 +34,7 @@ public class UIGlobalControl extends UIWindow {
 
         float yp = TITLE_LABEL_HEIGHT;
         final UIColorSwatch swatch = new UIColorSwatch(UIGlobalControl.this.core.palette, 4, yp, width - 8, 60) {
+            @Override
             protected void onDraw(UI ui, PGraphics pg) {
                 super.onDraw(ui, pg);
                 HueCyclePalette palette = UIGlobalControl.this.core.palette;
@@ -54,6 +55,7 @@ public class UIGlobalControl extends UIWindow {
         yp += 64;
 
         hueCycle.addListener(new LXParameterListener() {
+            @Override
             public void onParameterChanged(LXParameter p) {
                 HueCyclePalette palette = UIGlobalControl.this.core.palette;
                 palette.hueMode.setValue(hueCycle.isOn() ? LXPalette.HUE_MODE_CYCLE : LXPalette.HUE_MODE_STATIC);
@@ -61,6 +63,7 @@ public class UIGlobalControl extends UIWindow {
         });
 
         core.palette.hueMode.addListener(new LXParameterListener() {
+            @Override
             public void onParameterChanged(LXParameter p) {
                 HueCyclePalette palette = UIGlobalControl.this.core.palette;
                 swatch.setEnabled(palette.hueMode.getValuei() == LXPalette.HUE_MODE_STATIC);

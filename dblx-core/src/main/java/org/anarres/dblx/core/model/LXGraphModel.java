@@ -114,8 +114,8 @@ public class LXGraphModel extends LXModel {
 
         logTime("-- loading model " + model_name);
 
-        this.nodes = new TreeMap<String, Node>();
-        this.bars = new TreeMap<String, TreeMap<String, Bar>>();
+        this.nodes = new TreeMap<>();
+        this.bars = new TreeMap<>();
         String path_params = DIR_MAPS + "/" + model_name + "/" + FILE_PARAMS;
         String path_nodes = DIR_MAPS + "/" + model_name + "/" + FILE_NODES;
         String path_bars = DIR_MAPS + "/" + model_name + "/" + FILE_BARS;
@@ -175,9 +175,9 @@ public class LXGraphModel extends LXModel {
                     row.getString("Node2"),
                     // row.getInt("Channel"),
                     splitter.splitToList(row.getString("Tags"))
-                    // pixel_density,
-                    // pixel_buffer,
-                    // pixel_layout
+            // pixel_density,
+            // pixel_buffer,
+            // pixel_layout
             );
 
             this.add_bar(bar);
@@ -246,16 +246,19 @@ public class LXGraphModel extends LXModel {
         float len_bar = vector.mag();
         float len_zone = len_bar - (2f * buffer);
         int count = (int) Math.floor(len_zone * density);
-        float len_true = (float) count / density;
+        float len_true = count / density;
         float len_waste = len_true - len_zone;
 
         // offset coordinates for first pixel
-        if (layout == "fill") {
-            PVector.mult(norm, buffer, start);
-            PVector.mult(norm, rate, step);
-        } else if (layout == "center") {
-            PVector.mult(norm, buffer + (len_waste / 2f), start);
-            PVector.mult(norm, rate, step);
+        switch (layout) {
+            case "fill":
+                PVector.mult(norm, buffer, start);
+                PVector.mult(norm, rate, step);
+                break;
+            case "center":
+                PVector.mult(norm, buffer + (len_waste / 2f), start);
+                PVector.mult(norm, rate, step);
+                break;
         }
         // move to true coordinates
         PVector.add(start, get_node(bar.node1).xyz, coords);
@@ -272,7 +275,7 @@ public class LXGraphModel extends LXModel {
         pixels_in_model += count;
 
         //------------ Allocate Pixels!
-        List<LXPoint> points = new ArrayList<LXPoint>();
+        List<LXPoint> points = new ArrayList<>();
         for (int i = 0; i <= count; i++) {
             LXPoint point = new LXPoint(coords.x, coords.y, coords.z);
             points.add(point);

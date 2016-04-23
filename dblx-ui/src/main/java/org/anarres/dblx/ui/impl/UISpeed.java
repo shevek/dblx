@@ -25,6 +25,7 @@ public class UISpeed extends UIWindow {
         super(lx.ui, "SPEED", x, y, w, h);
         speed = new BasicParameter("SPEED", 0.5);
         speed.addListener(new LXParameterListener() {
+            @Override
             public void onParameterChanged(LXParameter parameter) {
                 lx.setSpeed(parameter.getValuef() * 2);
             }

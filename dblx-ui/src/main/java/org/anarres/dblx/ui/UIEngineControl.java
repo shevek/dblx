@@ -25,6 +25,7 @@ public class UIEngineControl extends UIWindow {
 
         y = UIWindow.TITLE_LABEL_HEIGHT;
         new UIButton(4, y, width - 8, 20) {
+            @Override
             protected void onToggle(boolean enabled) {
                 core.lx.engine.setThreaded(enabled);
                 fpsKnob.setEnabled(enabled);

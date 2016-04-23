@@ -30,7 +30,7 @@ public class UIEffects extends UIWindow {
         this.core = core;
 
         int yp = UIWindow.TITLE_LABEL_HEIGHT;
-        List<UIItemList.Item> items = new ArrayList<UIItemList.Item>();
+        List<UIItemList.Item> items = new ArrayList<>();
         int i = 0;
         for (LXEffect fx : core.effectsArr) {
             items.add(new FXScrollItem(core, fx, i++));
@@ -46,6 +46,7 @@ public class UIEffects extends UIWindow {
         }
 
         LXParameterListener fxListener = new LXParameterListener() {
+            @Override
             public void onParameterChanged(LXParameter parameter) {
                 int i = 0;
                 for (LXParameter p : UIEffects.this.core.getSelectedEffect().getParameters()) {
@@ -81,18 +82,22 @@ public class UIEffects extends UIWindow {
             this.label = UIUtils.className(effect, "Effect");
         }
 
+        @Override
         public String getLabel() {
             return label;
         }
 
+        @Override
         public boolean isSelected() {
             return !effect.isEnabled() && (effect == core.getSelectedEffect());
         }
 
+        @Override
         public boolean isPending() {
             return effect.isEnabled();
         }
 
+        @Override
         public void onMousePressed() {
             if (effect == core.getSelectedEffect()) {
                 if (effect.isMomentary()) {
@@ -105,6 +110,7 @@ public class UIEffects extends UIWindow {
             }
         }
 
+        @Override
         public void onMouseReleased() {
             if (effect.isMomentary()) {
                 effect.disable();

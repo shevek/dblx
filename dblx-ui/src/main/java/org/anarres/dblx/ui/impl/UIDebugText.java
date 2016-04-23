@@ -40,6 +40,7 @@ public class UIDebugText extends UI2dContext {
         return this;
     }
 
+    @Override
     protected void onDraw(UI ui, PGraphics pg) {
         super.onDraw(ui, pg);
         if (line1.length() + line2.length() > 0) {

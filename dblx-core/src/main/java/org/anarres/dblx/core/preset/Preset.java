@@ -23,7 +23,7 @@ public class Preset {
     private final int index;
 
     String className;
-    private final Map<String, Float> parameters = new HashMap<String, Float>();
+    private final Map<String, Float> parameters = new HashMap<>();
 
     Preset(PresetManager manager, int index) {
         this.manager = manager;
@@ -41,7 +41,7 @@ public class Preset {
                 parameters.put(parts[i], Float.parseFloat(parts[i + 1]));
                 i += 2;
             }
-        } catch (Exception x) {
+        } catch (NumberFormatException x) {
             className = null;
             parameters.clear();
         }

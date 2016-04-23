@@ -35,6 +35,7 @@ public class UIComponentsDemo extends UIWindow {
         for (int i = 0; i < knobParameters.length; ++i) {
             knobParameters[i] = new BasicParameter("Knb" + (i + 1), i + 1, 0, 4);
             knobParameters[i].addListener(new LXParameterListener() {
+                @Override
                 public void onParameterChanged(LXParameter p) {
                     println(p.getLabel() + " value:" + p.getValue());
                 }

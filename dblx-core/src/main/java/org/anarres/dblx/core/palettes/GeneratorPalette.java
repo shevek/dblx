@@ -5,7 +5,7 @@ import java.awt.Color;
 
 public class GeneratorPalette {
 
-  /////////////////////////////////////////////////////////////// ENUMERATIONS
+    /////////////////////////////////////////////////////////////// ENUMERATIONS
     // Color Scheme (for color scheme generation)
     public enum ColorScheme {
 
@@ -56,8 +56,8 @@ public class GeneratorPalette {
         }
     }
 
-  ////////////////////////////////////////////////////////// GENERATOR PALETTE
-  //======================================================= INSTANCE VARIABLES
+    ////////////////////////////////////////////////////////// GENERATOR PALETTE
+    //======================================================= INSTANCE VARIABLES
     // reference color color palette
     public ColorOffset color;
     public ColorOffset[] palette;
@@ -81,7 +81,7 @@ public class GeneratorPalette {
 
     private boolean internalValueUpdate = false;
 
-  //============================================================= CONSTRUCTORS
+    //============================================================= CONSTRUCTORS
     /**
      * A color palette that algorithmically generates a new color at each
      * step based on the selected color scheme.
@@ -121,7 +121,7 @@ public class GeneratorPalette {
      GP(ColorOffset[], steps);
      // Complexest 
      */
-  //================================================================== SETTERS
+    //================================================================== SETTERS
     /**
      * Set a new base color and regenerate the palette.
      */
@@ -165,10 +165,10 @@ public class GeneratorPalette {
     }
 
     private void updateSteps() {
-        this.step_size = 1.0 / (double) steps;
+        this.step_size = 1.0 / steps;
     }
 
-  //=========================================================== INITIALIZATION
+    //=========================================================== INITIALIZATION
     /**
      * Get the default interpolation space for each color scheme.
      */
@@ -279,8 +279,8 @@ public class GeneratorPalette {
             int p = 0;
             for (int i = 0; i < palette.length - 1; i++) {
                 phases[p] = new ColorCyclePhase(p, i, i + 1,
-                        (double) (p) / (double) phase_count,
-                        (double) (p + 1) / (double) phase_count);
+                        (p) / phase_count,
+                        (p + 1) / phase_count);
                 p++;
             }
         } else if (loop == LoopPattern.Reverse) {
@@ -289,14 +289,14 @@ public class GeneratorPalette {
             int p = 0;
             for (int i = 0; i < palette.length - 1; i++) {
                 phases[p] = new ColorCyclePhase(p, i, i + 1,
-                        (double) (p) / (double) phase_count,
-                        (double) (p + 1) / (double) phase_count);
+                        (p) / phase_count,
+                        (p + 1) / phase_count);
                 p++;
             }
             for (int i = 0; i < palette.length - 1; i++) {
                 phases[p] = new ColorCyclePhase(p, palette.length - i - 1, palette.length - i - 2,
-                        (double) (p) / (double) phase_count,
-                        (double) (p + 1) / (double) phase_count);
+                        (p) / phase_count,
+                        (p + 1) / phase_count);
                 p++;
             }
         } else if (loop == LoopPattern.Cycle) {
@@ -305,14 +305,14 @@ public class GeneratorPalette {
             int p = 0;
             for (int i = 0; i < palette.length; i++) {
                 phases[p] = new ColorCyclePhase(p, i, (i + 1) % phase_count,
-                        (double) (p) / (double) phase_count,
-                        (double) (p + 1) / (double) phase_count);
+                        (p) / phase_count,
+                        (p + 1) / phase_count);
                 p++;
             }
         }
     }
 
-  //=============================================================== GET COLORS
+    //=============================================================== GET COLORS
     /**
      * Generate the next color in the sequence.
      */
@@ -328,7 +328,7 @@ public class GeneratorPalette {
      * Generate color from a given step in the sequence.
      */
     public int getColor(int step) {
-        return getColor((double) step / (double) steps);
+        return getColor(step / steps);
     }
 
     /**
@@ -338,7 +338,7 @@ public class GeneratorPalette {
         progress %= 1.f;
         int phase = (int) Math.floor(progress * this.phase_count);
         ColorCyclePhase p = this.phases[phase];
-        double pp = (this.progress - p.progress_start) * (double) this.phase_count;
+        double pp = (this.progress - p.progress_start) * this.phase_count;
         int color;
         if (space == ColorSpace.RGB) {
             color = LXColor.lerp(this.palette[p.color_start].getColor(),
@@ -354,7 +354,7 @@ public class GeneratorPalette {
         return color;
     }
 
-  //=========================================================== RESET PROGRESS
+    //=========================================================== RESET PROGRESS
     /**
      * Restart the palette at the beginning of the cycle. Allows the same
      * generator to be used for multiple objects with consistent results.
@@ -367,7 +367,7 @@ public class GeneratorPalette {
      * Reset the palette to a given step [0-steps].
      */
     public void reset(int step) {
-        reset((double) step / (double) this.steps);
+        reset(step / this.steps);
     }
 
     /**
@@ -401,7 +401,7 @@ public class GeneratorPalette {
         return c3;
     }
 
-  //============================================= CONVENIENCE COLOR OPERATIONS
+    //============================================= CONVENIENCE COLOR OPERATIONS
     /**
      * Standardized convenience HSB/RGB converters
      */
@@ -417,9 +417,9 @@ public class GeneratorPalette {
 
     public int RGBtoColor(int[] rgb) {
         System.out.format("R: %d  G: %d  B: %d\n", rgb[0], rgb[1], rgb[2]);
-        return new Color((float) rgb[0] / 256.f,
-                (float) rgb[1] / 256.f,
-                (float) rgb[2] / 256.f).getRGB();
+        return new Color(rgb[0] / 256.f,
+                rgb[1] / 256.f,
+                rgb[2] / 256.f).getRGB();
     }
 
     public int HSBtoColor(double[] hsb) {

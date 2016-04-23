@@ -14,7 +14,7 @@ public class UIUtils {
     public static String className(Object p, String suffix) {
         String s = p.getClass().getName();
         int li;
-        if ((li = s.lastIndexOf(".")) > 0) {
+        if ((li = s.lastIndexOf('.')) > 0) {
             s = s.substring(li + 1);
         }
         if (s.indexOf("SugarCubes$") == 0) {
@@ -24,6 +24,9 @@ public class UIUtils {
             s = s.substring(0, li);
         }
         return s;
+    }
+
+    private UIUtils() {
     }
 
 }

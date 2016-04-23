@@ -37,6 +37,7 @@ public class PresetManager {
         ChannelState(LXChannel channel) {
             this.channel = channel;
             channel.addListener(new LXChannel.AbstractListener() {
+                @Override
                 public void patternDidChange(LXChannel channel, LXPattern pattern) {
                     if (selectedPattern != pattern) {
                         onDirty();
@@ -80,6 +81,7 @@ public class PresetManager {
             }
         }
 
+        @Override
         public void onParameterChanged(LXParameter parameter) {
             onDirty();
         }

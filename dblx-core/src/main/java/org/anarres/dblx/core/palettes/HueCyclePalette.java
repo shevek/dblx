@@ -32,6 +32,7 @@ public class HueCyclePalette extends LXPalette {
         addParameter(center);
 
         zeriod.addListener(new LXParameterListener() {
+            @Override
             public void onParameterChanged(LXParameter p) {
                 period.setValue(zeriod.getValue());
             }
@@ -39,6 +40,7 @@ public class HueCyclePalette extends LXPalette {
 
     }
 
+    @Override
     public double getHue(LXPoint p) {
         return super.getHue() + spread.getValue() * (abs(p.x - center.getValuef()) + abs(p.y - model.cy));
     }

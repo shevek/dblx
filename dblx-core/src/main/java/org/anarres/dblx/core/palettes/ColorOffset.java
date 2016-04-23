@@ -1,7 +1,8 @@
 package org.anarres.dblx.core.palettes;
 
-import heronarts.lx.color.*;
 import heronarts.lx.LXUtils;
+import heronarts.lx.color.ColorParameter;
+import heronarts.lx.color.LXColor;
 import heronarts.lx.parameter.FixedParameter;
 import heronarts.lx.parameter.LXParameter;
 
@@ -50,7 +51,7 @@ public class ColorOffset extends ColorParameter {
         this.hue = hue;
         this.saturation = saturation;
         this.brightness = brightness;
-    //hue.addListener(this);
+        //hue.addListener(this);
         //saturation.addListener(this);
         //brightness.addListener(this);
         //System.out.println("GP - " + label);
@@ -64,6 +65,7 @@ public class ColorOffset extends ColorParameter {
         this.brightness = color.brightness;
     }
 
+    @Override
     public ColorOffset clone() {
         return new ColorOffset(this.label + "-clone", this.hue, this.saturation, this.brightness);
     }
@@ -114,6 +116,7 @@ public class ColorOffset extends ColorParameter {
         return new double[]{getHue(), getSaturation(), getBrightness()};
     }
 
+    @Override
     public int getColor() {
         //System.out.println("Getting color for " + label);
         double[] hsb = getHSB();
@@ -128,6 +131,7 @@ public class ColorOffset extends ColorParameter {
             LXColor.blue(color)};
     }
 
+    @Override
     public String getLabel() {
         return this.label;
     }

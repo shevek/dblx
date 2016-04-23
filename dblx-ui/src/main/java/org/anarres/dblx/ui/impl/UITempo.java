@@ -5,7 +5,6 @@
  */
 package org.anarres.dblx.ui.impl;
 
-import heronarts.lx.Tempo;
 import heronarts.lx.parameter.BasicParameter;
 import heronarts.lx.parameter.LXParameter;
 import heronarts.lx.parameter.LXParameterListener;
@@ -16,7 +15,6 @@ import heronarts.p3lx.ui.UIWindow;
 import heronarts.p3lx.ui.component.UIButton;
 import heronarts.p3lx.ui.component.UIKnob;
 import javax.annotation.Nonnull;
-import processing.core.PApplet;
 import processing.core.PGraphics;
 
 /**
@@ -35,6 +33,7 @@ public class UITempo extends UIWindow {
         super(lx.ui, "TEMPO", x, y, w, h);
 
         tempoButton = new UIButton(4, UIWindow.TITLE_LABEL_HEIGHT, w - 75, 20) {
+            @Override
             protected void onToggle(boolean active) {
                 if (active) {
                     lx.tempo.tap();
@@ -43,6 +42,7 @@ public class UITempo extends UIWindow {
         }.setMomentary(true);
 
         LXParameterListener tempoListener = new LXParameterListener() {
+            @Override
             public void onParameterChanged(LXParameter parameter) {
                 if (parameter == tempoAdjustFine) {
                     tempoKnobFine.setParameter(tempoAdjustFine);
@@ -58,11 +58,13 @@ public class UITempo extends UIWindow {
         tempoAdjustFine = new BasicParameter("temF", 0, -3, 3);
         tempoAdjustCoarse = new BasicParameter("temC", 0, 0, 300);
         tempoAdjustFine.addListener(new LXParameterListener() {
+            @Override
             public void onParameterChanged(LXParameter tempoAdjustFine) {
                 lx.tempo.adjustBpm(tempoAdjustFine.getValue());
             }
         });
         tempoAdjustCoarse.addListener(new LXParameterListener() {
+            @Override
             public void onParameterChanged(LXParameter tempoAdjustCoarse) {
                 lx.tempo.setBpm(tempoAdjustCoarse.getValuef());
             }
@@ -87,6 +89,7 @@ public class UITempo extends UIWindow {
             this.lx = lx;
         }
 
+        @Override
         protected void onDraw(UI ui, PGraphics pg) {
             tempoButton.setLabel("" + ((int) (lx.tempo.bpm() * 10)) / 10.);
 

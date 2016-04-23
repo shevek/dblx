@@ -33,7 +33,7 @@ public class DBLPalette {
 
     public static Color[] interpolate(Color[] gradient, int colorCount) {
         Color[] colors = new Color[colorCount];
-        float scale = (float) (gradient.length - 1) / (float) (colorCount - 1);
+        float scale = (gradient.length - 1) / (colorCount - 1);
 
         for (int i = 0; i < colorCount; i++) {
             float value = scale * i;

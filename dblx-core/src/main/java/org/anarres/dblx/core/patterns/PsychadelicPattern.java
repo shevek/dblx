@@ -23,7 +23,7 @@ public class PsychadelicPattern extends LXPattern {
     private final BasicParameter colorHue = new BasicParameter("HUE", 0., 0., 359.);
     private final BasicParameter colorSat = new BasicParameter("SAT", 80., 0., 100.);
     private final BasicParameter colorBrt = new BasicParameter("BRT", 80., 0., 100.);
-    private GeneratorPalette gp
+    private final GeneratorPalette gp
             = new GeneratorPalette(
                     new ColorOffset(0xDD0000).setHue(colorHue)
                     .setSaturation(colorSat)
@@ -53,6 +53,7 @@ public class PsychadelicPattern extends LXPattern {
          */
     }
 
+    @Override
     public void run(double deltaMs) {
         int newScheme = (int) Math.floor(colorScheme.getValue());
         if (newScheme != scheme) {

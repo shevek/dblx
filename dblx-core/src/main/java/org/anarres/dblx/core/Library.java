@@ -101,4 +101,7 @@ public class Library {
             new SparkleEffect(lx)
         };
     }
+
+    private Library() {
+    }
 }

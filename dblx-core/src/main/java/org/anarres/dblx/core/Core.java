@@ -10,9 +10,10 @@ import heronarts.lx.parameter.DiscreteParameter;
 import heronarts.lx.pattern.LXPattern;
 import heronarts.lx.transition.LXTransition;
 import heronarts.p3lx.P3LX;
-import org.anarres.dblx.core.model.LXGraphModel;
 import org.anarres.dblx.core.model.Model;
 import org.anarres.dblx.core.palettes.HueCyclePalette;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -20,6 +21,7 @@ import org.anarres.dblx.core.palettes.HueCyclePalette;
  */
 public class Core {
 
+    private static final Logger LOG = LoggerFactory.getLogger(Core.class);
     /** This is the index of the LXEngine channel for the left side of the GUI. */
     public static final int LEFT_CHANNEL = 0;
     /** This is the index of the LXEngine channel for the right side of the GUI. */
@@ -51,7 +53,7 @@ public class Core {
     @Deprecated
     public static void logTime(String evt) {
         long now = System.currentTimeMillis();
-        System.out.format("%5d ms: %s\n", (now - lastMillis), evt);
+        LOG.debug("%5d ms: %s\n", (now - lastMillis), evt);
         lastMillis = now;
     }
 

@@ -6,7 +6,7 @@
 package org.anarres.dblx.core.model;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *

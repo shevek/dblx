@@ -10,7 +10,7 @@ import heronarts.p3lx.ui.UIWindow;
 import heronarts.p3lx.ui.component.UISlider;
 import heronarts.p3lx.ui.component.UIToggleSet;
 import javax.annotation.Nonnull;
-import static org.anarres.dblx.core.Core.*;
+import static org.anarres.dblx.core.Core.RIGHT_CHANNEL;
 
 /**
  *

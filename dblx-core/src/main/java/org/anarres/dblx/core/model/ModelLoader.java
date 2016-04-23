@@ -17,9 +17,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import javax.annotation.Nonnull;
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
 import org.anarres.dblx.core.LengthUnit;
 
 /**

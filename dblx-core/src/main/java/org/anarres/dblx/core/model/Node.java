@@ -7,7 +7,6 @@ package org.anarres.dblx.core.model;
 
 import java.util.List;
 import javax.annotation.Nonnull;
-import javax.vecmath.Vector3f;
 import processing.core.PVector;
 
 //********************************************************************* NODE
