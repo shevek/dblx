@@ -33,6 +33,8 @@ subprojects {
 	}
 }
 
+def springVersion = '4.2.6.RELEASE'
+
 project(':dblx-core') {
 	dependencies {
 		compile 'com.google.guava:guava:18.0'
@@ -52,6 +54,12 @@ project(':dblx-core') {
 
 		compile 'org.biojava:jcolorbrewer:5.2'
 		compile 'com.opencsv:opencsv:3.7'
+
+		// Assembly
+		compile 'com.google.auto.service:auto-service:1.0-rc2'
+		compile "org.springframework:spring-context-support:$springVersion"
+		compile 'net.sf.jopt-simple:jopt-simple:4.8'
+		compile 'org.anarres.jdiagnostics:jdiagnostics:1.0.2'
 
 		testCompile 'org.choco-solver:choco-graph:3.3.0'
 	}
