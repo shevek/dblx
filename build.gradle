@@ -97,6 +97,8 @@ project(':dblx-package') {
 		compile project(':dblx-iface-muse')
 		compile project(':dblx-iface-evolution')
 		compile project(':dblx-output-beaglebone')
+
+		runtime 'ch.qos.logback:logback-classic:1.1.7'
 	}
 
 	apply plugin: 'application'
