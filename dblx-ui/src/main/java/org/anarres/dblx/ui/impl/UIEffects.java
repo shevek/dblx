@@ -32,7 +32,7 @@ public class UIEffects extends UIWindow {
         int yp = UIWindow.TITLE_LABEL_HEIGHT;
         List<UIItemList.Item> items = new ArrayList<>();
         int i = 0;
-        for (LXEffect fx : core.effectsArr) {
+        for (LXEffect fx : core.effects) {
             items.add(new FXScrollItem(core, fx, i++));
         }
         final UIItemList effectsList = new UIItemList(1, yp, w - 2, 60).setItems(items);

@@ -31,8 +31,7 @@ public class Core {
     public Model model;
     public LXPattern[] patterns;
     public LXTransition[] transitions;
-    // Effects effects;
-    public LXEffect[] effectsArr;
+    public LXEffect[] effects;
     public DiscreteParameter selectedEffect;
 
     // public NerveBundle nervebundle;
@@ -46,6 +45,6 @@ public class Core {
     public long simulationNanos;
 
     public LXEffect getSelectedEffect() {
-        return effectsArr[selectedEffect.getValuei()];
+        return effects[selectedEffect.getValuei()];
     }
 }
