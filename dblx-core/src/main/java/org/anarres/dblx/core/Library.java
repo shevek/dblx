@@ -15,7 +15,6 @@ import heronarts.lx.transition.FadeTransition;
 import heronarts.lx.transition.LXTransition;
 import heronarts.lx.transition.MultiplyTransition;
 import heronarts.lx.transition.SubtractTransition;
-import heronarts.p3lx.P3LX;
 import javax.annotation.Nonnull;
 import org.anarres.dblx.core.effects.SparkleEffect;
 import org.anarres.dblx.core.patterns.BlankPattern;
@@ -79,7 +78,7 @@ public class Library {
 
     //---------------- Transitions
     @Nonnull
-    public static LXTransition[] transitions(P3LX lx) {
+    public static LXTransition[] transitions(LX lx) {
         return new LXTransition[]{
             new AddTransition(lx),
             new DissolveTransition(lx),
@@ -95,7 +94,7 @@ public class Library {
     }
 
     @Nonnull
-    public static LXEffect[] effects(@Nonnull P3LX lx) {
+    public static LXEffect[] effects(@Nonnull LX lx) {
         return new LXEffect[]{
             new FlashEffect(lx),
             new SparkleEffect(lx)

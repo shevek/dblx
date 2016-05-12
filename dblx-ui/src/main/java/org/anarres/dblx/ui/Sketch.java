@@ -15,6 +15,7 @@ import heronarts.p3lx.ui.UI;
 import heronarts.p3lx.ui.UI2dContext;
 import heronarts.p3lx.ui.UI3dContext;
 import heronarts.p3lx.ui.control.UIChannelControl;
+import javax.annotation.Nonnull;
 import org.anarres.dblx.core.Core;
 import org.anarres.dblx.core.LengthUnit;
 import org.anarres.dblx.core.Library;
@@ -45,7 +46,7 @@ public class Sketch extends PApplet {
 
     private final Core core;
 
-    public Sketch(Core core) {
+    public Sketch(@Nonnull Core core) {
         this.core = core;
     }
 
@@ -61,7 +62,7 @@ public class Sketch extends PApplet {
         LOG.info("Setting up.");
 
         colorMode(HSB);                                 // nicer color mode
-        size(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, OPENGL);  // startup screen size
+        size(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, P3D);  // startup screen size
         frame.setResizable(true);                       // but is resizable
 
         //not necessary, uncomment and play with it if the frame has issues
@@ -78,7 +79,7 @@ public class Sketch extends PApplet {
         LOG.debug("Loaded Model");
         //model.initialize();
         //model.setChannelMap();
-  /* uncomment to check pixel indexes
+        /* uncomment to check pixel indexes
          for (int i =0; i<48; i++){
          println(i);
          println(model.channelMap.get(i)); 
